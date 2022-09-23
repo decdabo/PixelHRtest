@@ -1,7 +1,10 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require('cors');
-require('dotenv').config();
+
+if (process.env.NODE_ENV === 'development') {
+  require('dotenv').config();
+}
 
 const { db } = require("./database");
 const app = express();
