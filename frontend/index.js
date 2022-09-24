@@ -1,1 +1,3 @@
-require('./syles/styles.css');
+import './syles/styles.css';
+
+
