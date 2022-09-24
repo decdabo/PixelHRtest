@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require("express");
 const morgan = require("morgan");
 const cors = require('cors');
@@ -16,5 +17,6 @@ app.use(express.urlencoded({ limit:'50mb', extended: true }));
 app.use(morgan("dev"));
 
 app.use('/api/tasks', require("./routes/tasks"));
+app.use(express.static(path.join(__dirname, 'public')));
 
 module.exports = app;
