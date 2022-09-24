@@ -1,0 +1,1 @@
+require('./syles/styles.css');
