@@ -1,6 +1,6 @@
 class TaskServices {
   constructor() {
-    this.baseURL = "http://localhost:9000/api/tasks";
+    this.baseURL = "/api/tasks";
   }
 
   async getTasks(name) {
