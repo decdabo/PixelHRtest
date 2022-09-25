@@ -9,7 +9,7 @@ class TaskServices {
     return res;
   }
   async deleteTask(id) {
-    await fetch(`${this.baseURL}/${id}`, {
+    await fetch(`${this.baseURL}/${id ? id : ''}`, {
       method: 'DELETE'
     });
   }

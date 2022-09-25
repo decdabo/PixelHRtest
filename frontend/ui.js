@@ -42,7 +42,12 @@ class Ui {
   async deleteTask(id) {
     await services.deleteTask(id)
 
-    this.renderTasks();
+    await this.renderTasks();
+  }
+  async deleteAllTasks() {
+    await services.deleteTask();
+    
+    await this.renderTasks();
   }
 }
 

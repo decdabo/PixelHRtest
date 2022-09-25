@@ -4,12 +4,14 @@ import Ui from './ui';
 const createTaskForm = document.getElementById('create-task-form');
 let taskIds = [];
 
+// Task render  
 document.addEventListener('DOMContentLoaded', async () => {
   const ui = new Ui();
   await ui.renderTasks();
 });
 
-createTaskForm.addEventListener('submit', (e) => {
+// Form  logic 
+createTaskForm.addEventListener('submit', async(e) => {
   e.preventDefault()
   const ui = new Ui();
   const name = createTaskForm['name'].value;
@@ -17,11 +19,30 @@ createTaskForm.addEventListener('submit', (e) => {
   const form = new FormData();
   form.append("name", name);
   
-  ui.createTask({ name });
+  await ui.createTask({ name });
+  createTaskForm['name'].value = '';
 })
 
+// Delete buttons 
+document.getElementById('delete-all').addEventListener('click', async() => {
+  const ui = new Ui();
 
-document.getElementById('root').addEventListener('click', (e) => {
+  await ui.deleteAllTasks();
+})
+
+document.getElementById('delete-markeds').addEventListener('click', async() => {
+  const ui = new Ui();
+  if (taskIds.length) {
+    return taskIds.forEach( async (id) => {
+      await ui.deleteTask(id);
+    })
+  }
+
+  return alert('No tasks marked')
+})
+
+// Task buttons 
+document.getElementById('root').addEventListener('click', async (e) => {
   switch (e.target.name) {
     case 'checkbox':
       if (e.target.checked) {
@@ -32,8 +53,8 @@ document.getElementById('root').addEventListener('click', (e) => {
       break;
     case 'delete-button': 
       const ui = new Ui();
-      ui.deleteTask(e.target.value);
 
+      await ui.deleteTask(e.target.value);
       break;
     default:
       break;
