@@ -6,10 +6,8 @@ const taskPostSchema = {
   type: 'object',
   properties: {
     name: { type: 'string' },
-    description: { type: 'string' },
-    list: { type: 'array' }
   },
-  required: ['name', 'list'],
+  required: ['name'],
   additionalProperties: false
 }
 
@@ -17,7 +15,7 @@ const postValidator = ajv.compile(taskPostSchema);
 
 const postTaskValidator = async( req, res, next ) => {
   const valid = await postValidator( req.body );
-  if (!valid) return res.status(400).send(postValidator.errors);
+  if (!valid) return res.status(400).send(postValidator.errors), console.log('bad');
 
   return next();
 }

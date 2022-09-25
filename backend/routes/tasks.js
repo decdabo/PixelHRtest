@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { postTask, getTasks, deleteTask, updateTask } = require('../controllers/tasks');
+const { postTask, getTasks, deleteTask, deleteAllTask } = require('../controllers/tasks');
 const { postTaskValidator } = require('../middlewares/task-validator');
 
 const router = Router();
@@ -7,7 +7,7 @@ const router = Router();
 router.get('/', getTasks);
 router.get('/:name', getTasks);
 router.post('/', postTaskValidator, postTask);
-router.post('/:name', updateTask);
-router.delete('/:name', deleteTask);
+router.delete('/:id', deleteTask);
+router.delete('/', deleteAllTask);
 
 module.exports = router;

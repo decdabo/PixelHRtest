@@ -11,76 +11,50 @@ const getTasks = async(req, res) => {
   const { name } = req.params;
   try {
     if (name) {
-      const task = await Task.findOne({ name });
-      return res.status(200).json({
-        message: '',
-        task
-      })
+      const task = await Task.findOne({ name }).sort('-_id');
+      
+      return res.status(200).json(task)
     }
   
-    const tasks = await Task.find({});
-    return res.status(200).json({
-      message: '',
-      tasks
-    })
+    const tasks = await Task.find({}).sort('-_id');
+    return res.status(200).json(tasks)
   } catch (error) {
     catchError(res, error);
   }
 }
 
 const postTask = async(req, res) => {
-  const { name, description, list } = req.body;
+  const { name } = req.body;
 
-  if (name.length < 2) {
-    return res.status(400).json({ error: true, message: "Please insert a name to the task" });
-  }
-
-  const data = { name, description, list };
   try {
-    const task = new Task(data);
+    const task = new Task({ name });
     await task.save();
 
     return res.status(200).json({
       message: "Task created successfully",
-      ...data
+      ...task
     });
   } catch (error) {
     catchError(res, error);
   }
 }
 
-const updateTask = async(req, res) => {
-  const { description, list } = req.body;
-  const { name } = req.params;
-  try {
-    const task = await Task.findOne({ name });
-    task.description = description;
-    task.list = list;
-    await task.save();
+const deleteTask = async(req, res) => {
+  const { id } = req.params;
 
-    return res.status(200).json({
-      message: 'Task updated successfully!',
-      task
-    })
-  } catch (error) {
-    catchError(res, error);
-  }
+  await Task.findByIdAndDelete(id);
+
+  return res.json({
+    message: 'Deleted'
+  })
 }
 
-const deleteTask = async(req, res) => {
-  const { name } = req.params;
+const deleteAllTask = async(_, res) => {
   try {
-   const task = await Task.deleteOne({ name });
+    await Task.deleteMany({});
 
-    if (!task.deletedCount) {
-      return res.status(400).json({
-        error: true,
-        message: "A task with that <<name>> not exists"
-      })
-    }
     return res.status(200).json({
-      message: 'Deleted successfully',
-      task
+      message: 'All tasks has been deleted!'
     })
   } catch (error) {
     catchError(res, error);
@@ -90,6 +64,6 @@ const deleteTask = async(req, res) => {
 module.exports = {
   getTasks,
   postTask,
-  updateTask,
-  deleteTask
+  deleteTask,
+  deleteAllTask
 }
